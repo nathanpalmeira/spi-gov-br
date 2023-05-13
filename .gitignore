@@ -1,0 +1,20 @@
+# Used for Docker volume mount during development
+/destination-folder
+
+# Created by https://www.toptal.com/developers/gitignore/api/maven
+# Edit at https://www.toptal.com/developers/gitignore?templates=maven
+
+
+### Maven ###
+target/
+
+#VSCode
+.vscode/
+
+# IntelliJ
+.idea/
+
+build.sh
+
+# Eclipse
+.settings
