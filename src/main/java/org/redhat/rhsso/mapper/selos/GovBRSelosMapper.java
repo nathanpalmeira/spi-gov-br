@@ -1,4 +1,4 @@
-package org.redhat.rhsso.mapper;
+package org.redhat.rhsso.mapper.selos;
 
 import org.keycloak.OAuthErrorException;
 import org.keycloak.models.ClientSessionContext;

@@ -1,4 +1,4 @@
-package org.redhat.rhsso.mapper;
+package org.redhat.rhsso.mapper.confiabilidade;
 
 import org.keycloak.OAuthErrorException;
 import org.keycloak.models.ClientSessionContext;
@@ -14,25 +14,24 @@ import javax.ws.rs.core.Response;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.jboss.logging.Logger;
 
 
 /**
 * 
 */
-public class GovBREmpresaMapper extends AbstractOIDCProtocolMapper implements OIDCAccessTokenMapper{
+public class GovBRConfiabilidadeMapper extends AbstractOIDCProtocolMapper implements OIDCAccessTokenMapper{
 
-    protected final Logger logger = Logger.getLogger(GovBREmpresaMapper.class);
+    protected final Logger logger = Logger.getLogger(GovBRConfiabilidadeMapper.class);
 
-    public static final String PROVIDER_ID = "govbr-empresa-mapper";
+    public static final String PROVIDER_ID = "govbr-confiabilidade-mapper";
 
     private static final List<ProviderConfigProperty> configProperties = new ArrayList<>();
 
     static {
         OIDCAttributeMapperHelper.addTokenClaimNameConfig(configProperties);
-        //TODO: configs properties
-        OIDCAttributeMapperHelper.addIncludeInTokensConfig(configProperties, GovBREmpresaMapper.class);
+        //TODO: configs properties  
+        OIDCAttributeMapperHelper.addIncludeInTokensConfig(configProperties, GovBRConfiabilidadeMapper.class);
     }
 
     
@@ -51,7 +50,7 @@ public class GovBREmpresaMapper extends AbstractOIDCProtocolMapper implements OI
 
     @Override
     public String getDisplayType() {
-        return "GovBR - Empresa";
+        return "GovBR - Confiabilidade";
     }
 
     @Override
@@ -61,9 +60,8 @@ public class GovBREmpresaMapper extends AbstractOIDCProtocolMapper implements OI
 
     @Override
     public String getHelpText() {
-        return "Inclui no token a empresa importada do GOV.BR";
+        return "Inclui no token a confiabilidade importada do GOV.BR";
     }
-    
     
     /** 
      * Method that is called in the construction of the token, it triggers the 
@@ -79,8 +77,7 @@ public class GovBREmpresaMapper extends AbstractOIDCProtocolMapper implements OI
     @Override
     protected void setClaim(IDToken token, ProtocolMapperModel mappingModel, UserSessionModel userSession, KeycloakSession keycloakSession,
                             ClientSessionContext clientSessionCtx) throws ErrorResponseException {
-        this.logger.info("Iniciando SPI GovBREmpresaMapper");
-
+        this.logger.info("Iniciando SPI GovBRConfiabilidadeMapper");
 
         //TODO: GET PROPERTIES
 
@@ -88,17 +85,16 @@ public class GovBREmpresaMapper extends AbstractOIDCProtocolMapper implements OI
 
         //TODO: Format data
 
-        String params = "GovBREmpresaMapper";
+        String params = "GovBRConfiabilidadeMapper";
         this.logger.info("Incluindo resultado ao token");
         OIDCAttributeMapperHelper.mapClaim(token, mappingModel, params);
        
     }
 
     
-
     @Override
     public void close() {
-        logger.info("SPI GovBREmpresaMapper - finished");
+        logger.info("SPI GovBRConfiabilidadeMapper - finished");
     }
     
 
