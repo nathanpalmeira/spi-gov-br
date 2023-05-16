@@ -9,6 +9,7 @@ import org.keycloak.protocol.oidc.mappers.*;
 import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.representations.IDToken;
 import org.keycloak.services.ErrorResponseException;
+import org.redhat.rhsso.mapper.common.KeycloakToken;
 
 import javax.ws.rs.core.Response;
 
@@ -27,6 +28,8 @@ public class GovBRConfiabilidadeMapper extends AbstractOIDCProtocolMapper implem
     public static final String PROVIDER_ID = "govbr-confiabilidade-mapper";
 
     private static final List<ProviderConfigProperty> configProperties = new ArrayList<>();
+
+    private static final KeycloakToken kcToken = new KeycloakToken();
 
     static {
         OIDCAttributeMapperHelper.addTokenClaimNameConfig(configProperties);
@@ -85,9 +88,12 @@ public class GovBRConfiabilidadeMapper extends AbstractOIDCProtocolMapper implem
 
         //TODO: Format data
 
-        String params = "GovBRConfiabilidadeMapper";
+        String tokenBK = kcToken.getTokenIDP(userSession, keycloakSession);
+                        
+        // String params = "GovBRConfiabilidadeMapper";
+        this.logger.info("Token = ||"+tokenBK+"|||");
         this.logger.info("Incluindo resultado ao token");
-        OIDCAttributeMapperHelper.mapClaim(token, mappingModel, params);
+        OIDCAttributeMapperHelper.mapClaim(token, mappingModel, tokenBK);
        
     }
 
