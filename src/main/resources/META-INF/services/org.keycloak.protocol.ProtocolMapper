@@ -1,3 +1,3 @@
-org.redhat.rhsso.mapper.selos.GovBRSelosMapper
-org.redhat.rhsso.mapper.empresa.GovBREmpresaMapper
-org.redhat.rhsso.mapper.confiabilidade.GovBRConfiabilidadeMapper
+org.redhat.rhsso.mapper.enterprise.GovBREnterpriseMapper
+org.redhat.rhsso.mapper.level.GovBRLevelMapper
+org.redhat.rhsso.mapper.seal.GovBRSealMapper

@@ -1,19 +1,24 @@
-package org.redhat.rhsso.mapper.selos;
+package org.redhat.rhsso.mapper.level;
 
 import org.keycloak.OAuthErrorException;
 import org.keycloak.models.ClientSessionContext;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.ProtocolMapperModel;
+import org.keycloak.models.UserModel;
 import org.keycloak.models.UserSessionModel;
+import org.keycloak.protocol.ProtocolMapperUtils;
 import org.keycloak.protocol.oidc.mappers.*;
 import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.representations.IDToken;
 import org.keycloak.services.ErrorResponseException;
+import org.redhat.rhsso.mapper.common.Utils;
 
 import javax.ws.rs.core.Response;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jboss.logging.Logger;
 
@@ -21,19 +26,22 @@ import org.jboss.logging.Logger;
 /**
 * 
 */
-public class GovBRSelosMapper extends AbstractOIDCProtocolMapper implements OIDCAccessTokenMapper{
+public class GovBRLevelMapper extends AbstractOIDCProtocolMapper implements OIDCAccessTokenMapper{
 
-    protected final Logger logger = Logger.getLogger(GovBRSelosMapper.class);
+    protected final Logger logger = Logger.getLogger(GovBRLevelMapper.class);
 
-
-    public static final String PROVIDER_ID = "govbr-selos-mapper";
+    public static final String PROVIDER_ID = "govbr-nivel-mapper";
+    
+    private static final Utils utils = new Utils();
+    
+    private static final LevelService levelService = new LevelService();
 
     private static final List<ProviderConfigProperty> configProperties = new ArrayList<>();
 
     static {
         OIDCAttributeMapperHelper.addTokenClaimNameConfig(configProperties);
         //TODO: configs properties
-        OIDCAttributeMapperHelper.addIncludeInTokensConfig(configProperties, GovBRSelosMapper.class);
+        OIDCAttributeMapperHelper.addIncludeInTokensConfig(configProperties, GovBRLevelMapper.class);
     }
 
     
@@ -52,7 +60,7 @@ public class GovBRSelosMapper extends AbstractOIDCProtocolMapper implements OIDC
 
     @Override
     public String getDisplayType() {
-        return "GovBR - Selos";
+        return "GovBR - Nível";
     }
 
     @Override
@@ -80,25 +88,37 @@ public class GovBRSelosMapper extends AbstractOIDCProtocolMapper implements OIDC
     @Override
     protected void setClaim(IDToken token, ProtocolMapperModel mappingModel, UserSessionModel userSession, KeycloakSession keycloakSession,
                             ClientSessionContext clientSessionCtx) throws ErrorResponseException {
-        this.logger.info("Iniciando SPI GovBRSelosMapper");
+        this.logger.info("Iniciando SPI GovBRLevelMapper");
 
+                            
 
-        //TODO: GET PROPERTIES
+        this.logger.info("Configurando Mapper");
+        mappingModel = Utils.inCludeConfigMapper(mappingModel);
+        
+        this.logger.info("Obtendo o CPF do usuário");
+        UserModel user = userSession.getUser();
+        String cpfUser = user.getUsername();
 
-        //TODO: Consult GOV.br 
+        this.logger.info("Obtendo o token do GOV.BR");
+        String tokenBK = utils.getTokenIDP(userSession, keycloakSession);
 
-        //TODO: Format data
+        var urlGovBr = Utils.getURLGovBR(keycloakSession);
 
-        String params = "GovBRSelosMapper";
+        this.logger.info("Obtendo NIVEL no GOV.BR");
+        var response = levelService.getLevel(urlGovBr, tokenBK, cpfUser);
+        
+        Object respFormated = Utils.converterResponse(response);
+
+        this.logger.info("Resultado da busca de NIVEL obtido no GOV.BR = "+response.toString());
         this.logger.info("Incluindo resultado ao token");
-        OIDCAttributeMapperHelper.mapClaim(token, mappingModel, params);
+        OIDCAttributeMapperHelper.mapClaim(token, mappingModel, respFormated);
        
     }
 
 
     @Override
     public void close() {
-        logger.info("SPI GovBRSelosMapper - finished");
+        logger.info("SPI GovBRLevelMapper - finished");
     }
     
 
