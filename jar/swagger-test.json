@@ -3,10 +3,10 @@
     "info": {
      "description": "API que realiza o gerenciamento de OpenID, dados de usuário, tokens, registros, e requisições de MFA, autenticação de aplicações.",
      "version": "v1",
-     "title": "itmgnt-security-keycloak-renner"
+     "title": "itmgnt-security-keycloak-teste"
     },
-    "host": "https://keycloak-hml.lojasrenner.com.br",
-    "basePath": "/itmgnt/security/keycloak-renner",
+    "host": "https://keycloak-hml.teste.com.br",
+    "basePath": "/itmgnt/security/keycloak-teste",
     "schemes": [
      "https"
     ],
