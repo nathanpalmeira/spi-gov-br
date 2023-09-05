@@ -1,0 +1,1278 @@
+{
+    "swagger": "3.0",
+    "info": {
+     "description": "API que realiza o gerenciamento de OpenID, dados de usuário, tokens, registros, e requisições de MFA, autenticação de aplicações.",
+     "version": "v1",
+     "title": "itmgnt-security-keycloak-renner"
+    },
+    "host": "https://keycloak-hml.lojasrenner.com.br",
+    "basePath": "/itmgnt/security/keycloak-renner",
+    "schemes": [
+     "https"
+    ],
+    "security": [
+     {
+      "default": []
+     }
+    ],
+    "paths": {
+     "/protocol/openid-connect/auth": {
+      "get": {
+       "parameters": [
+            {
+              "name": "scope",
+              "in": "query",
+              "required": true,
+              "description": "OpenID Connect requests MUST contain the openid scope value. If the openid scope value is not present, the behavior is entirely unspecified. Other scope values MAY be present.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "response_type",
+              "in": "query",
+              "required": true,
+              "description": "OAuth 2.0 Response Type value that determines the authorization processing flow to be used, including what parameters are returned from the endpoints used.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "client_id",
+              "in": "query",
+              "required": true,
+              "description": "OAuth 2.0 Client Identifier valid at the Authorization Server.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "redirect_uri",
+              "in": "query",
+              "required": true,
+              "description": "Redirection URI to which the response will be sent. This URI MUST exactly match one of the Redirection URI values for the Client pre-registered at the OpenID Provider.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "state",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "Opaque value used to maintain state between the request and the callback.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "response_mode",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "Informs the Authorization Server of the mechanism to be used for returning parameters from the Authorization Endpoint.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "nonce",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "String value used to associate a Client session with an ID Token, and to mitigate replay attacks.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "display",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "ASCII string value that specifies how the Authorization Server displays the authentication and consent user interface pages to the End-User.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "prompt",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "Space delimited, case sensitive list of ASCII string values that specifies whether the Authorization Server prompts the End-User for reauthentication and consent. The defined values are - none, login, consent, select_account.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "max_age",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "Maximum Authentication Age. Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OP.",
+              "schema": {
+                "type": "integer"
+              }
+            },
+            {
+              "name": "ui_locales",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "End-User's preferred languages and scripts for the user interface, represented as a space-separated list of BCP47 [RFC5646] language tag values, ordered by preference.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "id_token_hint",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "ID Token previously issued by the Authorization Server being passed as a hint about the End-User's current or past authenticated session with the Client. If the End-User identified by the ID Token is logged in or is logged in by the request, then the Authorization Server returns a positive response.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "login_hint",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "Hint to the Authorization Server about the login identifier the End-User might use to log in (if necessary).",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "acr_values",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "Requested Authentication Context Class Reference values. Space-separated string that specifies the acr values that the Authorization Server is being requested to use for processing this Authentication Request, with the values appearing in order of preference.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "amr_values",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "AMR Values.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "request",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "This parameter enables OpenID Connect requests to be passed in a single, self-contained parameter and to be optionally signed and/or encrypted. The parameter value is a Request Object value. It represents the request as a JWT whose Claims are the request parameters.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "request_uri",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "This parameter enables OpenID Connect requests to be passed by reference, rather than by value. The request_uri value is a URL using the https scheme referencing a resource containing a Request Object value, which is a JWT containing the request parameters.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "request_session_id",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "Request session id.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "session_id",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "Session id of this call.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "origin_headers",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "Origin headers. Used in custom workflows.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "code_challenge",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "PKCE code challenge.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "code_challenge_method",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "PKCE code challenge method.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "custom_response_headers",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "Custom Response Headers.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "claims",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "Requested Claims.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "auth_req_id",
+              "in": "query",
+              "required": false,
+              "allowEmptyValue": false,
+              "description": "CIBA authentication request Id.",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+        "responses": {
+            "200": {
+              "description": "OK",
+              "content": {}
+            },
+            "302": {
+              "description": "Error codes for authorization endpoint.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "title": "AuthorizeError",
+                    "type": "object",
+                    "required": [
+                      "error",
+                      "error_description"
+                    ],
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "format": "enum",
+                        "example": [
+                          "invalid_request",
+                          "unauthorized_client",
+                          "disabled_client",
+                          "access_denied",
+                          "retry",
+                          "unsupported_response_type",
+                          "invalid_scope",
+                          "server_error",
+                          "temporarily_unavailable",
+                          "invalid_request_redirect_uri",
+                          "login_required",
+                          "session_selection_required",
+                          "consent_required",
+                          "user_mismatched",
+                          "invalid_request_uri",
+                          "invalid_request_object",
+                          "authentication_session_invalid",
+                          "invalid_authentication_method"
+                        ]
+                      },
+                      "error_description": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "$ref": "#/components/responses/InvalidRequest"
+            },
+            "401": {
+              "$ref": "#/components/responses/Unauthorized"
+            },
+            "500": {
+              "$ref": "#/components/responses/InternalServerError"
+            }
+        },
+       "security": [
+        {
+         "default": []
+        }
+       ],
+       "x-auth-type": "Application & Application User",
+       "x-throttling-tier": "Unlimited",
+       "x-wso2-application-security": {
+        "security-types": [
+         "oauth2"
+        ],
+        "optional": false
+       }
+      },
+      "post": {
+        "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "scope",
+                    "response_type",
+                    "client_id",
+                    "redirect_uri"
+                  ],
+                  "properties": {
+                    "scope": {
+                      "type": "string",
+                      "description": "OpenID Connect requests MUST contain the openid scope value. If the openid scope value is not present, the behavior is entirely unspecified. Other scope values MAY be present."
+                    },
+                    "response_type": {
+                      "type": "string",
+                      "description": "OAuth 2.0 Response Type value that determines the authorization processing flow to be used, including what parameters are returned from the endpoints used."
+                    },
+                    "client_id": {
+                      "type": "string",
+                      "description": "OAuth 2.0 Client Identifier valid at the Authorization Server."
+                    },
+                    "redirect_uri": {
+                      "type": "string",
+                      "description": "Redirection URI to which the response will be sent. This URI MUST exactly match one of the Redirection URI values for the Client pre-registered at the OpenID Provider."
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "Opaque value used to maintain state between the request and the callback."
+                    },
+                    "response_mode": {
+                      "type": "string",
+                      "description": "Informs the Authorization Server of the mechanism to be used for returning parameters from the Authorization Endpoint."
+                    },
+                    "nonce": {
+                      "type": "string",
+                      "description": "String value used to associate a Client session with an ID Token, and to mitigate replay attacks."
+                    },
+                    "display": {
+                      "type": "string",
+                      "description": "ASCII string value that specifies how the Authorization Server displays the authentication and consent user interface pages to the End-User."
+                    },
+                    "prompt": {
+                      "type": "string",
+                      "description": "Space delimited, case sensitive list of ASCII string values that specifies whether the Authorization Server prompts the End-User for reauthentication and consent."
+                    },
+                    "max_age": {
+                      "type": "integer",
+                      "description": "Maximum Authentication Age. Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OP."
+                    },
+                    "ui_locales": {
+                      "type": "string",
+                      "description": "End-User's preferred languages and scripts for the user interface, represented as a space-separated list of BCP47 [RFC5646] language tag values, ordered by preference.",
+                      "example": "\\\"fr-CA fr en\\\" represents a preference for French as spoken in Canada, then French (without a region designation), followed by English (without a region designation)."
+                    },
+                    "id_token_hint": {
+                      "type": "string",
+                      "description": "ID Token previously issued by the Authorization Server being passed as a hint about the End-User's current or past authenticated session with the Client. If the End-User identified by the ID Token is logged in or is logged in by the request, then the Authorization Server returns a positive response."
+                    },
+                    "login_hint": {
+                      "type": "string",
+                      "description": "Hint to the Authorization Server about the login identifier the End-User might use to log in (if necessary)."
+                    },
+                    "acr_values": {
+                      "type": "string",
+                      "description": "Requested Authentication Context Class Reference values. Space-separated string that specifies the acr values that the Authorization Server is being requested to use for processing this Authentication Request, with the values appearing in order of preference."
+                    },
+                    "amr_values": {
+                      "type": "string",
+                      "description": "AMR Values."
+                    },
+                    "request": {
+                      "type": "string",
+                      "description": "This parameter enables OpenID Connect requests to be passed in a single, self-contained parameter and to be optionally signed and/or encrypted. The parameter value is a Request Object value. It represents the request as a JWT whose Claims are the request parameters."
+                    },
+                    "request_uri": {
+                      "type": "string",
+                      "description": "This parameter enables OpenID Connect requests to be passed by reference, rather than by value. The request_uri value is a URL using the https scheme referencing a resource containing a Request Object value, which is a JWT containing the request parameters."
+                    },
+                    "request_session_id": {
+                      "type": "string",
+                      "description": "Request session id."
+                    },
+                    "session_id": {
+                      "type": "string",
+                      "description": "Session id of this call."
+                    },
+                    "origin_headers": {
+                      "type": "string",
+                      "description": "Origin headers. Used in custom workflows."
+                    },
+                    "code_challenge": {
+                      "type": "string",
+                      "description": "PKCE code challenge."
+                    },
+                    "code_challenge_method": {
+                      "type": "string",
+                      "description": "PKCE code challenge method."
+                    },
+                    "custom_response_headers": {
+                      "type": "string",
+                      "description": "Custom Response Headers."
+                    },
+                    "claims": {
+                      "type": "string",
+                      "description": "Requested Claims."
+                    }
+                  }
+                }
+              }
+            }
+        },
+        "responses": {
+            "200": {
+              "description": "OK",
+              "content": {}
+            },
+            "302": {
+              "description": "Error codes for authorization endpoint.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "title": "AuthorizeError",
+                    "type": "object",
+                    "required": [
+                      "error",
+                      "error_description"
+                    ],
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "format": "enum",
+                        "example": [
+                          "invalid_request",
+                          "unauthorized_client",
+                          "disabled_client",
+                          "access_denied",
+                          "retry",
+                          "unsupported_response_type",
+                          "invalid_scope",
+                          "server_error",
+                          "temporarily_unavailable",
+                          "invalid_request_redirect_uri",
+                          "login_required",
+                          "session_selection_required",
+                          "consent_required",
+                          "user_mismatched",
+                          "invalid_request_uri",
+                          "invalid_request_object",
+                          "authentication_session_invalid",
+                          "invalid_authentication_method"
+                        ]
+                      },
+                      "error_description": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "$ref": "#/components/responses/InvalidRequest"
+            },
+            "401": {
+              "$ref": "#/components/responses/Unauthorized"
+            },
+            "500": {
+              "$ref": "#/components/responses/InternalServerError"
+            }
+        },
+        "security": [
+         {
+          "default": []
+         }
+        ],
+        "x-auth-type": "Application & Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-wso2-application-security": {
+         "security-types": [
+          "oauth2"
+         ],
+         "optional": false
+        }
+       }
+     },
+     "/protocol/openid-connect/token": {
+        "post": {
+         "requestBody": {
+            "required": true,
+            "content": {
+                "application/x-www-form-urlencoded": {
+                "schema": {
+                    "type": "object",
+                    "required": [
+                    "grant_type"
+                    ],
+                    "properties": {
+                    "grant_type": {
+                        "type": "string",
+                        "description": "Provide a list of the OAuth 2.0 grant types that the Client is declaring that it will restrict itself to using. [authorization_code, password, client_credentials, ...]",
+                        "example": "authorization_code"
+                    },
+                    "code": {
+                        "type": "string",
+                        "description": "Code which is returned by authorization endpoint. (For grant_type=authorization_code)"
+                    },
+                    "redirect_uri": {
+                        "type": "string",
+                        "description": "Redirection URI to which the response will be sent. This URI MUST exactly match one of the Redirection URI values for the Client pre-registered at the OpenID Provider."
+                    },
+                    "username": {
+                        "type": "string",
+                        "description": "End-User username."
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "End-User password."
+                    },
+                    "scope": {
+                        "type": "array",
+                        "description": "OpenID Connect requests MUST contain the openid scope value. If the openid scope value is not present, the behavior is entirely unspecified. Other scope values MAY be present. Scope values used that are not understood by an implementation SHOULD be ignored.",
+                        "items": {
+                        "type": "string"
+                        }
+                    },
+                    "refresh_token": {
+                        "type": "string",
+                        "description": "Refresh token."
+                    },
+                    "client_id": {
+                        "type": "string",
+                        "description": "OAuth 2.0 Client Identifier valid at the Authorization Server."
+                    },
+                    "client_secret": {
+                        "type": "string",
+                        "description": "The client secret.  The client MAY omit the parameter if the client secret is an empty string."
+                    }
+                    }
+                }
+                }
+            }
+         },
+         "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "description": "AccessTokenResponse.",
+                    "required": [
+                      "access_token",
+                      "token_type"
+                    ],
+                    "properties": {
+                      "access_token": {
+                        "type": "string",
+                        "description": "The access token issued by the authorization server."
+                      },
+                      "token_type": {
+                        "type": "string",
+                        "description": "The access token type provides the client with the information required to successfully utilize the access token to make a protected resource request (along with type-specific attributes)."
+                      },
+                      "expires_in": {
+                        "type": "integer",
+                        "description": "The lifetime in seconds of the access token. For example, the value \\\"3600\\\" denotes that the access token will expire in one hour from the time the response was generated."
+                      },
+                      "refresh_token": {
+                        "type": "string",
+                        "description": "The refresh token, which can be used to obtain new access tokens using the same authorization grant"
+                      },
+                      "scope": {
+                        "type": "array",
+                        "example": [
+                          "openid",
+                          "oxd"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "id_token": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid parameters provided to endpoint.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "required": [
+                      "error",
+                      "error_description"
+                    ],
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "format": "enum",
+                        "example": [
+                          "invalid_client_metadata",
+                          "invalid_token"
+                        ]
+                      },
+                      "error_description": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "$ref": "#/components/responses/Unauthorized"
+            },
+            "403": {
+              "$ref": "#/components/responses/AccessDenied"
+            },
+            "500": {
+              "$ref": "#/components/responses/InternalServerError"
+            }
+         },
+         "security": [
+          {
+           "default": []
+          }
+         ],
+         "x-auth-type": "Application & Application User",
+         "x-throttling-tier": "Unlimited",
+         "x-wso2-application-security": {
+          "security-types": [
+           "oauth2"
+          ],
+          "optional": false
+         }
+        }
+     },
+     "/protocol/openid-connect/userinfo": {
+        "get": {
+         "responses": {
+                "200": {
+                  "description": "OK",
+                  "content": {
+                    "application/jwt": {
+                      "schema": {
+                        "title": "User Claims details",
+                        "properties": {
+                          "sub": {
+                            "type": "integer",
+                            "example": 248289761001
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Jane Doe"
+                          },
+                          "given_name": {
+                            "type": "string",
+                            "example": "Jane"
+                          },
+                          "family_name": {
+                            "type": "string",
+                            "example": "Doe"
+                          },
+                          "preferred_username": {
+                            "type": "string",
+                            "example": "j.doe"
+                          },
+                          "email": {
+                            "type": "string",
+                            "example": "janedoe@example.com"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "400": {
+                  "description": "Invalid parameters provided to endpoint.",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "required": [
+                          "error",
+                          "error_description"
+                        ],
+                        "properties": {
+                          "error": {
+                            "type": "string",
+                            "format": "enum",
+                            "example": [
+                              "invalid_request"
+                            ]
+                          },
+                          "error_description": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "401": {
+                  "description": "Invalid parameters provided to endpoint.",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "required": [
+                          "error",
+                          "error_description"
+                        ],
+                        "properties": {
+                          "error": {
+                            "type": "string",
+                            "format": "enum",
+                            "example": [
+                              "invalid_token"
+                            ]
+                          },
+                          "error_description": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "403": {
+                  "description": "Invalid parameters provided to endpoint.",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "required": [
+                          "error",
+                          "error_description"
+                        ],
+                        "properties": {
+                          "error": {
+                            "type": "string",
+                            "format": "enum",
+                            "example": [
+                              "insufficient_scope"
+                            ]
+                          },
+                          "error_description": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "500": {
+                  "$ref": "#/components/responses/InternalServerError"
+                }
+         },
+         "security": [
+            {
+              "bearerAuth": []
+            }
+         ],
+         "x-auth-type": "Application & Application User",
+         "x-throttling-tier": "Unlimited",
+         "x-wso2-application-security": {
+          "security-types": [
+           "oauth2"
+          ],
+          "optional": false
+         }
+        },
+        "post": {
+            "requestBody": {
+                "required": true,
+                "content": {
+                  "application/x-www-form-urlencoded": {
+                    "schema": {
+                      "type": "object",
+                      "required": [
+                        "access_token"
+                      ],
+                      "properties": {
+                        "access_token": {
+                          "type": "string",
+                          "description": "OAuth 2.0 Access Token."
+                        }
+                      }
+                    }
+                  }
+                }
+            },
+            "responses": {
+                "200": {
+                  "description": "OK",
+                  "content": {
+                    "application/jwt": {
+                      "schema": {
+                        "title": "User Claims details",
+                        "properties": {
+                          "sub": {
+                            "type": "integer",
+                            "example": 248289761001
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Jane Doe"
+                          },
+                          "given_name": {
+                            "type": "string",
+                            "example": "Jane"
+                          },
+                          "family_name": {
+                            "type": "string",
+                            "example": "Doe"
+                          },
+                          "preferred_username": {
+                            "type": "string",
+                            "example": "j.doe"
+                          },
+                          "email": {
+                            "type": "string",
+                            "example": "janedoe@example.com"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "400": {
+                  "description": "Invalid parameters provided to endpoint.",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "required": [
+                          "error",
+                          "error_description"
+                        ],
+                        "properties": {
+                          "error": {
+                            "type": "string",
+                            "format": "enum",
+                            "example": [
+                              "invalid_request"
+                            ]
+                          },
+                          "error_description": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "401": {
+                  "description": "Invalid parameters provided to endpoint.",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "required": [
+                          "error",
+                          "error_description"
+                        ],
+                        "properties": {
+                          "error": {
+                            "type": "string",
+                            "format": "enum",
+                            "example": [
+                              "invalid_token"
+                            ]
+                          },
+                          "error_description": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "403": {
+                  "description": "Invalid parameters provided to endpoint.",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "required": [
+                          "error",
+                          "error_description"
+                        ],
+                        "properties": {
+                          "error": {
+                            "type": "string",
+                            "format": "enum",
+                            "example": [
+                              "insufficient_scope"
+                            ]
+                          },
+                          "error_description": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "500": {
+                  "$ref": "#/components/responses/InternalServerError"
+                }
+            },
+            "security": [
+                {
+                    "bearerAuth": []
+                }
+            ],
+            "x-auth-type": "Application & Application User",
+            "x-throttling-tier": "Unlimited",
+            "x-wso2-application-security": {
+             "security-types": [
+              "oauth2"
+             ],
+             "optional": false
+            }
+           }
+     },
+     "/mfa/v1/challenge": {
+        "post": {
+         "requestBody": {
+            "content": {
+                "application/json": {
+                "schema": {
+                    "title": "MFAChallengeSchema",
+                    "required": [
+                    "challengeType"
+                    ],
+                    "type": "object",
+                    "properties": {
+                    "username": {
+                        "type": "string",
+                        "description": "username you want to add MFA",
+                        "example": "johndue"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "email you want to add MFA",
+                        "example": "johndue@test.com"
+                    },
+                    "phoneNumber": {
+                        "type": "string",
+                        "description": "Name of the Client to be presented to the user.",
+                        "example": 11999887766
+                    },
+                    "challengeType": {
+                        "type": "string",
+                        "format": "enum",
+                        "enum": [
+                        "email"
+                        ],
+                        "description": "Type of MFA to send",
+                        "example": "email"
+                    }
+                    }
+                }
+                }
+            }
+         },
+         "responses": {
+            "201": {
+              "description": "Created"
+            },
+            "400": {
+              "$ref": "#/components/responses/InvalidRequest"
+            },
+            "403": {
+              "$ref": "#/components/responses/AccessDenied"
+            },
+            "406": {
+              "$ref": "#/components/responses/NotAcceptable"
+            },
+            "500": {
+              "$ref": "#/components/responses/InternalServerError"
+            }
+         },
+         "security": [
+          {
+           "bearerAuth": []
+          }
+         ],
+         "x-auth-type": "Application & Application User",
+         "x-throttling-tier": "Unlimited",
+         "x-wso2-application-security": {
+          "security-types": [
+           "oauth2"
+          ],
+          "optional": false
+         }
+        }
+     },
+     "/mfa/v1/verify": {
+        "get": {
+         "requestBody": {
+            "content": {
+                "application/json": {
+                "schema": {
+                    "title": "MFAVerifySchema",
+                    "required": [
+                    "username",
+                    "code",
+                    "challengeType"
+                    ],
+                    "type": "object",
+                    "properties": {
+                    "username": {
+                        "type": "string",
+                        "description": "username you want to verify MFA for",
+                        "example": "johndue"
+                    },
+                    "code": {
+                        "type": "string",
+                        "description": "code you received by email",
+                        "example": "johndue@test.com"
+                    },
+                    "challengeType": {
+                        "type": "string",
+                        "format": "enum",
+                        "enum": [
+                        "email"
+                        ],
+                        "description": "Type of MFA to send",
+                        "example": "email"
+                    }
+                    }
+                }
+                }
+            }
+         },
+         "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "title": "Verify MFA",
+                    "required": [
+                      "match"
+                    ],
+                    "properties": {
+                      "match": {
+                        "type": "boolean",
+                        "example": true
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "$ref": "#/components/responses/InvalidRequest"
+            },
+            "403": {
+              "$ref": "#/components/responses/AccessDenied"
+            },
+            "500": {
+              "$ref": "#/components/responses/InternalServerError"
+            }
+         },
+         "security": [
+          {
+           "bearerAuth": []
+          }
+         ],
+         "x-auth-type": "Application & Application User",
+         "x-throttling-tier": "Unlimited",
+         "x-wso2-application-security": {
+          "security-types": [
+           "oauth2"
+          ],
+          "optional": false
+         }
+        }
+       }
+    },
+    "components": {
+        "securitySchemes": {
+          "bearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+          }
+        },
+        "responses": {
+          "Found": {
+            "description": "Resource Found.",
+            "content": {}
+          },
+          "InvalidRequest": {
+            "description": "Invalid parameters are provided to endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "Unauthorized": {
+            "description": "Unauthorized access request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "AccessDenied": {
+            "description": "Invalid details provided hence access denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "NotFound": {
+            "description": "Resource Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "NotAcceptable": {
+            "description": "Request Not Acceptable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "InternalServerError": {
+            "description": "Internal error occured. Please check log file for details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "schemas": {
+          "ErrorResponse": {
+            "required": [
+              "error",
+              "error_description"
+            ],
+            "type": "object",
+            "properties": {
+              "error": {
+                "type": "string"
+              },
+              "error_description": {
+                "type": "string"
+              }
+            }
+          }
+        }
+    },
+    "securityDefinitions": {
+     "default": {
+      "type": "oauth2",
+      "authorizationUrl": "https://test.com",
+      "flow": "implicit"
+     }
+    },
+    "x-wso2-cors": {
+     "corsConfigurationEnabled": false,
+     "accessControlAllowOrigins": [
+      "*"
+     ],
+     "accessControlAllowCredentials": false,
+     "accessControlAllowHeaders": [
+      "authorization",
+      "Access-Control-Allow-Origin",
+      "Content-Type",
+      "SOAPAction",
+      "apikey",
+      "testKey"
+     ],
+     "accessControlAllowMethods": [
+      "GET",
+      "PUT",
+      "POST",
+      "DELETE",
+      "PATCH",
+      "OPTIONS"
+     ]
+    },
+    "x-wso2-production-endpoints": {
+     "urls": [
+      "https://sso-hml.lojasrenner.com.br/"
+     ],
+     "type": "http"
+    },
+    "x-wso2-basePath": "/itmgnt/security/keycloak-renner/v1",
+    "x-wso2-transports": [
+     "http",
+     "https"
+    ],
+    "x-wso2-application-security": {
+     "security-types": [
+      "oauth2"
+     ],
+     "optional": false
+    },
+    "x-wso2-response-cache": {
+     "enabled": false,
+     "cacheTimeoutInSeconds": 300
+    }
+   }
